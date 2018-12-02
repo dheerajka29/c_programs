@@ -50,30 +50,37 @@ destroy_linked_list(node_st_ * head) {
     }	    
 }
 
-bool
-is_loop_list(node_st_ * node) {
-    if (node == NULL)
-	return false;
-    if (node->next == NULL)
-	return false;
-    node_st_ * slow = node;
-    node_st_ * fast = node;
-    while(fast != NULL && fast->next != NULL) {
-    	  fast = fast->next->next;
-	  slow = slow->next;
-	  if(slow == fast)
-	     return true;	  
-    }	    
-    return false;
-}	
+node_st_ *
+move_last_to_first(node_st_ * node) {
+    node_st_ * temp = node, *prev = node;
+    //If list is empty , return list
+    if(node == NULL)
+	return node;
+    //If list next is empty , list is null
+    if(node->next == NULL)
+	return node;
+    //Loop while last element whose next is NULL is found.
+    while(temp->next != NULL) {
+         prev = temp;
+	 temp = temp->next;
+    }
+    prev->next = NULL;
+    temp->next = node;
+    return temp;
+}
 
 int 
 main(void) {
     node_st_ * head = NULL, *head2 = NULL;
     head = insert_linked_list(head,5);
-    head->next = head;
-    printf("%s\n",is_loop_list(head)?"true":"false");
-    //destroy_linked_list(head);
-    //head = NULL;
+    head = insert_linked_list(head,10);
+    head = insert_linked_list(head,15);
+    head = insert_linked_list(head,20);
+    head = insert_linked_list(head,25);
+    print_linked_list(head);
+    head = move_last_to_first(head);
+    print_linked_list(head);
+    destroy_linked_list(head);
+    head = NULL;
     return 0;
 }

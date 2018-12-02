@@ -50,30 +50,40 @@ destroy_linked_list(node_st_ * head) {
     }	    
 }
 
-bool
-is_loop_list(node_st_ * node) {
-    if (node == NULL)
-	return false;
-    if (node->next == NULL)
-	return false;
-    node_st_ * slow = node;
-    node_st_ * fast = node;
-    while(fast != NULL && fast->next != NULL) {
-    	  fast = fast->next->next;
-	  slow = slow->next;
-	  if(slow == fast)
-	     return true;	  
-    }	    
-    return false;
-}	
+int
+length_loop_list(node_st_ * head) {
+    if(head == NULL)
+       return -1;
+    if(head->next == NULL)
+       return -1;
+    node_st_ * tortoise = head;
+    node_st_ * hare = head;
+    while(hare != NULL && hare->next != NULL) {
+          tortoise = tortoise->next;
+          hare = hare->next->next;
+          if(tortoise == hare)
+             break; 
+    }
+    if(hare == NULL )
+       return -1;
+    else if (hare->next == NULL)
+       return -1;
+    int count = 0;
+    tortoise = tortoise->next;
+    while(tortoise != hare) {
+           count++;
+           tortoise = tortoise->next;
+    }
+    return count;     
+}
 
 int 
 main(void) {
     node_st_ * head = NULL, *head2 = NULL;
     head = insert_linked_list(head,5);
-    head->next = head;
-    printf("%s\n",is_loop_list(head)?"true":"false");
-    //destroy_linked_list(head);
-    //head = NULL;
+    head = insert_linked_list(head,10);
+    head = insert_linked_list(head,15);
+    head->next->next->next = head;
+    printf("Length is %d\n",length_loop_list(head));
     return 0;
 }

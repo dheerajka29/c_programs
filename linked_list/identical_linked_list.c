@@ -51,29 +51,35 @@ destroy_linked_list(node_st_ * head) {
 }
 
 bool
-is_loop_list(node_st_ * node) {
-    if (node == NULL)
-	return false;
-    if (node->next == NULL)
-	return false;
-    node_st_ * slow = node;
-    node_st_ * fast = node;
-    while(fast != NULL && fast->next != NULL) {
-    	  fast = fast->next->next;
-	  slow = slow->next;
-	  if(slow == fast)
-	     return true;	  
-    }	    
-    return false;
-}	
+are_list_identical(node_st_ * list1,
+		   node_st_ * list2) {
+	if(list1 == NULL && list2 == NULL)
+	   return true;
+	if (list1 == NULL)
+	    return false;
+	if (list2 == NULL)
+	    return false;
+	if(list1->data != list2->data)
+	   return false;
+	else
+	   return are_list_identical(list1->next,list2->next);
+}
 
 int 
 main(void) {
-    node_st_ * head = NULL, *head2 = NULL;
+    node_st_ * head = NULL,*head1 = NULL;
     head = insert_linked_list(head,5);
-    head->next = head;
-    printf("%s\n",is_loop_list(head)?"true":"false");
-    //destroy_linked_list(head);
-    //head = NULL;
+    head = insert_linked_list(head,10);
+    head = insert_linked_list(head,15);
+    head = insert_linked_list(head,20);
+    head = insert_linked_list(head,25);
+    head1 = insert_linked_list(head,5);
+    head1 = insert_linked_list(head,10);
+    head1 = insert_linked_list(head,15);
+    head1 = insert_linked_list(head,20);
+    head1 = insert_linked_list(head,25);
+    print_linked_list(head);
+    printf("%s\n",are_list_identical(head,head1)?"Identical":"Non Identical");
+    destroy_linked_list(head);
     return 0;
 }

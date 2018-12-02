@@ -50,30 +50,38 @@ destroy_linked_list(node_st_ * head) {
     }	    
 }
 
-bool
-is_loop_list(node_st_ * node) {
-    if (node == NULL)
-	return false;
-    if (node->next == NULL)
-	return false;
-    node_st_ * slow = node;
-    node_st_ * fast = node;
-    while(fast != NULL && fast->next != NULL) {
-    	  fast = fast->next->next;
-	  slow = slow->next;
-	  if(slow == fast)
-	     return true;	  
-    }	    
-    return false;
-}	
+node_st_ *
+remove_duplicates(node_st_ * node) {
+    if(node == NULL)
+       return node;
+    if(node->next == NULL)
+       return node;
+    node_st_ * temp = node;
+    node_st_ * free_node = NULL;
+    while(temp != NULL && temp->next != NULL) {
+          if(temp->data == temp->next->data){
+             free_node = temp->next;
+             temp->next = temp->next->next;
+	     free(free_node);
+	  } else {
+ 	     temp= temp->next;
+	  }
+    }
+    return node;
+}
 
 int 
 main(void) {
     node_st_ * head = NULL, *head2 = NULL;
     head = insert_linked_list(head,5);
-    head->next = head;
-    printf("%s\n",is_loop_list(head)?"true":"false");
-    //destroy_linked_list(head);
-    //head = NULL;
+    head = insert_linked_list(head,10);
+    head = insert_linked_list(head,10);
+    head = insert_linked_list(head,15);
+    head = insert_linked_list(head,15);
+    print_linked_list(head);
+    head = remove_duplicates(head); 
+    print_linked_list(head);
+    destroy_linked_list(head);
+    head = NULL;
     return 0;
 }
