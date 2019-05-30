@@ -6,8 +6,11 @@ partition_sort(int * arr, int low, int high) {
     int pivot = arr[low];
     int index = low+1;
     int swap_temp = 0;
-    int i = index; 
+    int i = index;
+    //Initially index and i will be at the same position. 
     for (index; index <= high; index++) {
+	 //if we find a position which is smaller than the pivot ,
+	 //move it closer to the pivot element.   
     	 if (arr[index] < pivot) {
 	     swap_temp = arr[index];
 	     arr[index] = arr[i];
@@ -15,6 +18,11 @@ partition_sort(int * arr, int low, int high) {
 	     i++;
 	 }	 
     }	  
+    //On the end of the loop, i will be pointing to an element 
+    //greater than the pivot.
+    //So simply swap the pivot element with the (i-1) which will be smaller than pivot
+    // now pivot is at its correct position . 
+    // quick sort around the pivot index now.
     swap_temp = arr[i-1];
     arr[i-1] = pivot;
     arr[low] = swap_temp; 
